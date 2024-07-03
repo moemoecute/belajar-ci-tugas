@@ -29,11 +29,11 @@
     }
     ?>
     <li class="nav-item">
-      <a class="nav-link <?php echo (uri_string() == 'profil') ? "" : "collapsed" ?>" href="profil">
+      <a class="nav-link <?php echo (uri_string() == 'profile') ? "" : "collapsed" ?>" href="profile">
         <i class="bi bi-person"></i>
         <span>Profil</span>
       </a>
-    </li><!-- End Profil Nav -->
+    </li><!-- End Profile Nav -->
 
     <li class="nav-item">
       <a class="nav-link <?php echo (uri_string() == 'faq') ? "" : "collapsed" ?>" href="faq">
