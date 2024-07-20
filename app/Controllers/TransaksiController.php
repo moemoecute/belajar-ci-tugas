@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\TransactionModel;
 use App\Models\TransactionDetailModel;
+use Dompdf\Dompdf;
 
 class TransaksiController extends BaseController
 {
@@ -195,5 +196,46 @@ class TransaksiController extends BaseController
 
             return redirect()->to(base_url('profile'));
         }
+    }
+
+    public function edit($id)
+    {
+        // Ambil data transaksi berdasarkan ID
+        $transaction = $this->transaction->find($id);
+
+        // Ambil data yang dikirim dari form
+        $data = [
+            'status' => $this->request->getPost('status'),
+            'updated_at' => date("Y-m-d H:i:s")
+        ];
+
+        // Update status transaksi
+        $this->transaction->update($id, $data);
+
+        return redirect()->to(base_url('transaksi'))->with('success', 'Status transaksi berhasil diubah');
+    }
+
+    public function download()
+    {
+        $buy = $this->transaction->findAll();
+
+        $html = view('v_TransaksiPDF', ['buy' => $buy]);
+
+        $filename = date('y-m-d-H-i-s') . '-status';
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+
+        // load HTML content
+        $dompdf->loadHtml($html);
+
+        // (optional) setup the paper size and orientation
+        $dompdf->setPaper('A4', 'potrait');
+
+        // render html as PDF
+        $dompdf->render();
+
+        // output the generated pdf
+        $dompdf->stream($filename);
     }
 }

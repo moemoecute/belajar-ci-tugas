@@ -26,12 +26,24 @@ class ProdukController extends BaseController
     {
         $dataFoto = $this->request->getFile('foto');
 
-        $dataForm = [
-            'nama' => $this->request->getPost('nama'),
-            'harga' => $this->request->getPost('harga'),
-            'jumlah' => $this->request->getPost('jumlah'),
-            'created_at' => date("Y-m-d H:i:s")
-        ];
+        if ($this->request->getPost()) {
+            $rules = [
+                'nama' => 'required|min_length[5]',
+                'harga' => 'required|numeric',
+                'jumlah' => 'required|numeric',
+            ];
+            if ($this->validate($rules)) {
+                $dataForm = [
+                    'nama' => $this->request->getPost('nama'),
+                    'harga' => $this->request->getPost('harga'),
+                    'jumlah' => $this->request->getPost('jumlah'),
+                    'created_at' => date("Y-m-d H:i:s")
+                ];
+            } else {
+                session()->setFlashdata('failed', $this->validator->listErrors());
+                return redirect()->back();
+            }
+        }
 
         if ($dataFoto->isValid()) {
             $fileName = $dataFoto->getRandomName();

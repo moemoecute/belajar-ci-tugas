@@ -5,10 +5,10 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class ContactController extends BaseController
+class UserController extends BaseController
 {
     public function index()
     {
-        return view('v_kontak');
+        return view('v_user');
     }
 }
